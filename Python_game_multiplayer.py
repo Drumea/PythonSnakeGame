@@ -12,21 +12,37 @@ window.bgcolor("black")
 window.setup(width=1000, height= 500)
 window.tracer(0)
 
-head= turtle.Turtle()
-head.speed(0)
-head.shape("square")
-head.color("red")
-head.penup()
-head.goto(-250,0)
-head.direction="left"
+head1= turtle.Turtle()
+head1.speed(0)
+head1.shape("square")
+head1.color("red")
+head1.penup()
+head1.goto(-250,0)
+head1.direction="left"
 
-food= turtle.Turtle()
-food.speed(0)
-food.shape("circle")
-food.color("yellow")
-food.penup()
-food.goto(random.randint(-490,0),random.randint(-230,180))
-food.direction="stop"
+food1= turtle.Turtle()
+food1.speed(0)
+food1.shape("circle")
+food1.color("yellow")
+food1.penup()
+food1.goto(random.randint(-490,0),random.randint(-230,180))
+food1.direction="stop"
+
+head2= turtle.Turtle()
+head2.speed(0)
+head2.shape("square")
+head2.color("red")
+head2.penup()
+head2.goto(250,0)
+head2.direction="right"
+
+food2= turtle.Turtle()
+food2.speed(0)
+food2.shape("circle")
+food2.color("yellow")
+food2.penup()
+food2.goto(random.randint(0,490),random.randint(-230,180))
+food2.direction="stop"
 
 bodyparts=[]
 
@@ -49,47 +65,78 @@ score_display_p2.goto(0,210)
 score_display_p2.write("     Score: 0 High Score: 0", align="left",font=("Courier",20,"bold"))
 
 def move(): #Movement Directions
-    y=head.ycor()
-    x=head.xcor()
-    if head.direction=="up":
-        head.sety(y+20)
+    y1=head1.ycor()
+    x1=head1.xcor()
+    y2=head2.ycor()
+    x2=head2.xcor()
+    if head1.direction=="up":
+        head1.sety(y1+20)
 
-    if head.direction=="down":
-        head.sety(y-20)
+    if head1.direction=="down":
+        head1.sety(y1-20)
 
-    if head.direction=="left":
-        head.setx(x-20)
+    if head1.direction=="left":
+        head1.setx(x1-20)
 
-    if head.direction=="right":
-        head.setx(x+20)
-    
-def go_up(): #Movement controls
-    if head.direction !="down":
-        head.direction="up"
-def go_down():
-    if head.direction !="up":
-        head.direction="down"
-def go_left():
-    if head.direction !="right":
-        head.direction="left"
-def go_right():
-    if head.direction !="left":
-        head.direction="right"
+    if head1.direction=="right":
+        head1.setx(x1+20)
+
+    if head2.direction=="up":
+        head2.sety(y2+20)
+
+    if head2.direction=="down":
+        head2.sety(y2-20)
+
+    if head2.direction=="left":
+        head2.setx(x2-20)
+
+    if head2.direction=="right":
+        head2.setx(x2+20)
+
+def go_up1(): #Movement controls
+    if head1.direction !="down":
+        head1.direction="up"
+def go_down1():
+    if head1.direction !="up":
+        head1.direction="down"
+def go_left1():
+    if head1.direction !="right":
+        head1.direction="left"
+def go_right1():
+    if head1.direction !="left":
+        head1.direction="right"
+
+def go_up2(): #Movement controls
+    if head2.direction !="down":
+        head2.direction="up"
+def go_down2():
+    if head2.direction !="up":
+        head2.direction="down"
+def go_left2():
+    if head2.direction !="right":
+        head2.direction="left"
+def go_right2():
+    if head2.direction !="left":
+        head2.direction="right"
 def exit_game():
-    turtle.bye()
+    window.bye()
 
 window.listen()
-window.onkey(go_up, "Up")
-window.onkey(go_down, "Down")
-window.onkey(go_left, "Left")
-window.onkey(go_right, "Right")
-window.onkey(exit_game, "e")
+window.onkey(go_up1, "w")
+window.onkey(go_down1, "s")
+window.onkey(go_left1, "a")
+window.onkey(go_right1, "d")
+window.onkey(go_up2, "Up")
+window.onkey(go_down2, "Down")
+window.onkey(go_left2, "Left")
+window.onkey(go_right2, "Right")
+window.onkey(exit_game, "F1")
 
 #Game loop
 while True:
     window.update()   
-    if head.distance(food)<20:
-        food.goto(random.randint(-490,0),random.randint(-230,180))
+    if head1.distance(food1)<20:
+        food1.goto(random.randint(-490,0),random.randint(-230,180))
         new_bodypart=turtle.Turtle()
         new_bodypart.speed(0)
         new_bodypart.shape("square")
@@ -109,23 +156,31 @@ while True:
         bodyparts[i].goto(bodyparts[i-1].xcor(),bodyparts[i-1].ycor())       
     
     if len(bodyparts)>0:
-        bodyparts[0].goto(head.xcor(),head.ycor())
+        bodyparts[0].goto(head1.xcor(),head1.ycor())
     
-    if head.xcor()>490 :
-        head.goto(-490,head.ycor())
-    if head.xcor()<-490 :
-        head.goto(490,head.ycor())
-    if head.ycor()>=200 :
-        head.goto(head.xcor(),-240)
-    if head.ycor()<-240 :
-        head.goto(head.xcor(),200)
+    if head1.xcor()>490 :
+        head1.goto(-490,head1.ycor())
+    if head1.xcor()<-490 :
+        head1.goto(490,head1.ycor())
+    if head1.ycor()>=200 :
+        head1.goto(head1.xcor(),-240)
+    if head1.ycor()<-240 :
+        head1.goto(head1.xcor(),200)
+    if head2.xcor()>490 :
+        head2.goto(-490,head2.ycor())
+    if head2.xcor()<-490 :
+        head2.goto(490,head2.ycor())
+    if head2.ycor()>=200 :
+        head2.goto(head2.xcor(),-240)
+    if head2.ycor()<-240 :
+        head2.goto(head2.xcor(),200)
     
     move()
 
     for bodypart in bodyparts:
-        if bodypart.distance(head)<20:
-            head.goto(0,0)
-            head.direction="up"
+        if bodypart.distance(head1)<20:
+            head1.goto(0,0)
+            head1.direction="up"
             for bodypart in bodyparts:
                 bodypart.goto(5000,5000)
             bodyparts=[]

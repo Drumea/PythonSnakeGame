@@ -15,14 +15,10 @@ def game():
                 scores.append(int(lines[i]))
             else:
                 names.append(lines[i])
-        temp2=0
         temp=0 
         for i in range(0, len(scores)):    
             for j in range(i+1, len(scores)):    
                 if(scores[i] < scores[j]):
-                    temp2 =names[i]
-                    names[i]=names[j]
-                    names[j]=temp2
                     temp = scores[i]
                     scores[i] = scores[j]   
                     scores[j] = temp
@@ -128,7 +124,7 @@ def game():
         game_window.onkey(exit_game, "F1")
         names=[]
         scores=[]
-        with open('D:/SnekGeim/SinglePlayerHighScores.txt') as scoreboard:
+        with open('D:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
             lines = scoreboard.readlines()
         for i in range(len(lines)):
             if i%2==0:
@@ -152,9 +148,7 @@ def game():
         for i in range(0,5):
             y=y-100
             display.goto(-100,y)
-            display.write("{}.User: {} Score: {}".format(i+1,names[i].strip('\n'),str(scores[i]).strip('\n')), align="center",font=("Courier",20,"bold"))
-        
-
+            display.write("{}.User: {} Score: {}".format(i+1,names[i].strip('\n'),str(scores[i]).strip('\n')), align="center",font=("Courier",20,"bold"))       
     while True:
         game_window.update()   
         if head.distance(food)<20:
@@ -191,7 +185,7 @@ def game():
 
         for bodypart in bodyparts:
             if bodypart.distance(head)<20:
-                scoreboard = open("D:/SnekGeim/SinglePlayerHighScores.txt","a")
+                scoreboard = open("D:/PythonSnakeGame/SinglePlayerHighScores.txt","a")
                 scoreboard.write(str(score)+"\n")
                 scoreboard.close()
                 bodyparts=[]
