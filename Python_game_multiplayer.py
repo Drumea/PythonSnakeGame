@@ -2,12 +2,14 @@ import time
 import turtle
 import random
 
-score=0
-high_score=0
-delay=0.20
+score1=0
+high_score1=0
+score2=0
+high_score2=0
+delay=0.15
 
 window= turtle.Screen() #Game Window
-window.title("Drumea's Snake Game Attepmt - Multiplayer")
+window.title("Drumea's Snake Game Attepmt - Two Players")
 window.bgcolor("black")
 window.setup(width=1000, height= 500)
 window.tracer(0)
@@ -23,7 +25,7 @@ head1.direction="left"
 food1= turtle.Turtle()
 food1.speed(0)
 food1.shape("circle")
-food1.color("yellow")
+food1.color("orange")
 food1.penup()
 food1.goto(random.randint(-490,0),random.randint(-230,180))
 food1.direction="stop"
@@ -31,7 +33,7 @@ food1.direction="stop"
 head2= turtle.Turtle()
 head2.speed(0)
 head2.shape("square")
-head2.color("red")
+head2.color("green")
 head2.penup()
 head2.goto(250,0)
 head2.direction="right"
@@ -44,7 +46,16 @@ food2.penup()
 food2.goto(random.randint(0,490),random.randint(-230,180))
 food2.direction="stop"
 
-bodyparts=[]
+bodyparts2=[]
+bodyparts1=[]
+
+super_food= turtle.Turtle()
+super_food.speed(0)
+super_food.shape("circle")
+super_food.color("blue")
+super_food.penup()
+super_food.goto(random.randint(-490,490),random.randint(-230,180))
+super_food.direction="stop"
 
 score_display_p1=turtle.Turtle()
 score_display_p1.speed(0)
@@ -64,7 +75,7 @@ score_display_p2.hideturtle()
 score_display_p2.goto(0,210)
 score_display_p2.write("     Score: 0 High Score: 0", align="left",font=("Courier",20,"bold"))
 
-def move(): #Movement Directions
+def move(): #Movement Function
     y1=head1.ycor()
     x1=head1.xcor()
     y2=head2.ycor()
@@ -121,6 +132,24 @@ def go_right2():
 def exit_game():
     window.bye()
 
+def add_bodyparts1():
+    new_bodypart=turtle.Turtle()
+    new_bodypart.speed(0)
+    new_bodypart.shape("square")
+    new_bodypart.color("red")
+    new_bodypart.penup()
+    new_bodypart.goto(5000,5000)
+    bodyparts1.append(new_bodypart)
+
+def add_bodyparts2():
+    new_bodypart=turtle.Turtle()
+    new_bodypart.speed(0)
+    new_bodypart.shape("square")
+    new_bodypart.color("green")
+    new_bodypart.penup()
+    new_bodypart.goto(5000,5000)
+    bodyparts2.append(new_bodypart)
+
 window.listen()
 window.onkey(go_up1, "w")
 window.onkey(go_down1, "s")
@@ -137,27 +166,58 @@ while True:
     window.update()   
     if head1.distance(food1)<20:
         food1.goto(random.randint(-490,0),random.randint(-230,180))
-        new_bodypart=turtle.Turtle()
-        new_bodypart.speed(0)
-        new_bodypart.shape("square")
-        new_bodypart.color("red")
-        new_bodypart.penup()
-        bodyparts.append(new_bodypart)
-
-        score=score+5
-        delay=delay-0.005
-        if score>high_score:
-            high_score=score
+        add_bodyparts1()
+        score1=score1+5
+        if score1>high_score1:
+            high_score1=score1
         score_display_p1.clear()
-        score_display_p1.write("Score: {} High Score: {}     ".format(score,high_score), align="right",font=("Courier",20,"bold"))
-
-
-    for i in range(len(bodyparts)-1,0,-1):
-        bodyparts[i].goto(bodyparts[i-1].xcor(),bodyparts[i-1].ycor())       
+        score_display_p1.write("Score: {} High Score: {}    ".format(score1,high_score1), align="right",font=("Courier",20,"bold"))
     
-    if len(bodyparts)>0:
-        bodyparts[0].goto(head1.xcor(),head1.ycor())
+    if head2.distance(food2)<20:
+        food2.goto(random.randint(0,490),random.randint(-230,180))
+        add_bodyparts2()
+        score2=score2+5
+        if score2>high_score2:
+            high_score2=score2
+        score_display_p2.clear()
+        score_display_p2.write("    Score: {} High Score: {}     ".format(score2,high_score2), align="left",font=("Courier",20,"bold"))
+
+    if head1.distance(super_food)<20:
+        super_food.goto(random.randint(-490,490),random.randint(-230,180))
+        x=2
+        while x!=0:
+            add_bodyparts1()
+            x=x-1
+        score1=score1+10
+        if score1>high_score1:
+            high_score1=score1
+        score_display_p1.clear()
+        score_display_p1.write("Score: {} High Score: {}    ".format(score1,high_score1), align="right",font=("Courier",20,"bold"))
     
+    if head2.distance(super_food)<20:
+        super_food.goto(random.randint(-490,490),random.randint(-230,180))
+        x=2
+        while x!=0:
+            add_bodyparts2()
+            x=x-1
+        score2=score2+10
+        if score2>high_score2:
+            high_score2=score2
+        score_display_p2.clear()
+        score_display_p2.write("    Score: {} High Score: {}     ".format(score2,high_score2), align="left",font=("Courier",20,"bold"))
+
+    for i in range(len(bodyparts1)-1,0,-1):
+        bodyparts1[i].goto(bodyparts1[i-1].xcor(),bodyparts1[i-1].ycor())       
+    
+    if len(bodyparts1)>0:
+        bodyparts1[0].goto(head1.xcor(),head1.ycor())
+    
+    for i in range(len(bodyparts2)-1,0,-1):
+        bodyparts2[i].goto(bodyparts2[i-1].xcor(),bodyparts2[i-1].ycor())       
+    
+    if len(bodyparts2)>0:
+        bodyparts2[0].goto(head2.xcor(),head2.ycor())
+
     if head1.xcor()>490 :
         head1.goto(-490,head1.ycor())
     if head1.xcor()<-490 :
@@ -177,17 +237,58 @@ while True:
     
     move()
 
-    for bodypart in bodyparts:
-        if bodypart.distance(head1)<20:
-            head1.goto(0,0)
-            head1.direction="up"
-            for bodypart in bodyparts:
-                bodypart.goto(5000,5000)
-            bodyparts=[]
-            score=0
-            score_display_p1.clear()
-            score_display_p1.write("Score: {} High Score: {}     ".format(score,high_score), align="right",font=("Courier",20,"bold"))
-            delay=0.20
-    time.sleep(delay)
+    def snake1_death():
+        head1.goto(-250,0)
+        head1.direction="left"
+        score1=0
+        score_display_p1.clear()
+        score_display_p1.write("Score: {} High Score: {}    ".format(score1,high_score1), align="right",font=("Courier",20,"bold"))
+    
+    def snake2_death():
+        head2.goto(250,0)
+        head2.direction="right"
+        score2=0
+        score_display_p2.clear()
+        score_display_p2.write("    Score: {} High Score: {}    ".format(score2,high_score2), align="left",font=("Courier",20,"bold"))
 
+    for bodypart in bodyparts1:
+        if bodypart.distance(head1)<20:
+            snake1_death()
+            for bodypart in bodyparts1:
+                bodypart.goto(5000,5000)
+            bodyparts1=[]
+   
+    for bodypart in bodyparts2:
+        if bodypart.distance(head2)<20:
+            snake2_death()
+            for bodypart in bodyparts2:
+                bodypart.goto(5000,5000)
+            bodyparts2=[]
+
+    for bodypart in bodyparts1:
+        if bodypart.distance(head2)<20 or head1.distance(head2)<20:
+            if len(bodyparts1)>len(bodyparts2):
+                snake2_death()
+                for bodypart in bodyparts2:
+                    bodypart.goto(5000,5000)
+                bodyparts2=[]
+            else:
+                snake1_death()
+                for bodypart in bodyparts1:
+                    bodypart.goto(5000,5000)
+                bodyparts1=[]
+    
+    for bodypart in bodyparts2:
+        if bodypart.distance(head1)<20 or head2.distance(head1)<20:
+            if len(bodyparts1)>len(bodyparts2):
+                snake2_death()
+                for bodypart in bodyparts2:
+                    bodypart.goto(5000,5000)
+                bodyparts2=[]
+            else:
+                snake1_death()
+                for bodypart in bodyparts1:
+                    bodypart.goto(5000,5000)
+                bodyparts1=[]
+    time.sleep(delay)
 turtle.mainloop()

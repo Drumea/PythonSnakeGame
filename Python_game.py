@@ -2,32 +2,38 @@ import time
 import turtle
 import random
 
+def order_file():
+    scores=[]
+    names=[]
+    with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
+        lines = scoreboard.readlines()
+    for i in range(len(lines)):
+        if i%2==0:
+            scores.append(int(lines[i].strip("\n)")))
+        else:
+            names.append(lines[i].strip("\n)"))
+    temp2=0
+    temp=0 
+    for i in range(0, len(scores)):
+        for j in range(i+1, len(scores)):    
+            if(scores[i] < scores[j]):
+                temp2 =names[i]
+                names[i]=names[j]
+                names[j]=temp2
+                temp = scores[i]
+                scores[i] = scores[j]   
+                scores[j] = temp     
+    with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt','w') as scoreboard:
+        for i in range(0,len(scores)):
+            scoreboard.write(str(scores[i])+"\n"+names[i]+"\n")
+
 def game():
     delay=0.20
     score=0
-    names=[]
-    scores=[]
-    with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
-        lines = scoreboard.readlines()
-    if len(lines)!=0:
-        for i in range(len(lines)):
-            if i%2==0:
-                scores.append(int(lines[i]))
-            else:
-                names.append(lines[i])
-        temp=0 
-        for i in range(0, len(scores)):    
-            for j in range(i+1, len(scores)):    
-                if(scores[i] < scores[j]):
-                    temp = scores[i]
-                    scores[i] = scores[j]   
-                    scores[j] = temp
-        
-        high_score=scores[0]
-
-    else:
-        high_score=0
-
+    order_file()
+    scoreboard=open('d:/PythonSnakeGame/SinglePlayerHighScores.txt','r')
+    high_score=scoreboard.readline()
+    high_score=int(high_score.strip('\n'))
     game_window= turtle.Screen() #Game Window
     game_window.title("Drumea's Snake Game Attepmt - Singleplayer")
     game_window.tracer(0)
@@ -61,7 +67,7 @@ def game():
     display.goto(0,210)
     display.write("Score: 0 High Score: {}".format(high_score), align="center",font=("Courier",20,"bold"))
     
-    def move(): #Movement Directions
+    def move(): #Movement Function
         y=head.ycor()
         x=head.xcor()
         if head.direction=="up":
@@ -122,33 +128,19 @@ def game():
         game_window.listen()
         game_window.onkey(new_game, "space")
         game_window.onkey(exit_game, "F1")
-        names=[]
-        scores=[]
-        with open('D:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
-            lines = scoreboard.readlines()
-        for i in range(len(lines)):
-            if i%2==0:
-                scores.append(int(lines[i]))
-            else:
-                names.append(lines[i])
-        temp2=0
-        temp=0 
-        for i in range(0, len(scores)):    
-            for j in range(i+1, len(scores)):    
-                if(scores[i] < scores[j]):
-                    temp2 =names[i]
-                    names[i]=names[j]
-                    names[j]=temp2
-                    temp = scores[i]
-                    scores[i] = scores[j]   
-                    scores[j] = temp   
         display.goto(0,320)
         display.write(" LeaderBoad", align="center",font=("Courier",20,"bold"))
         y=300
-        for i in range(0,5):
+        j=1
+        order_file()
+        with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
+            lines = scoreboard.readlines()
+        for i in range(0,10,2):
             y=y-100
             display.goto(-100,y)
-            display.write("{}.User: {} Score: {}".format(i+1,names[i].strip('\n'),str(scores[i]).strip('\n')), align="center",font=("Courier",20,"bold"))       
+            display.write("{}.User: {} Score: {}".format(j,lines[i+1].strip('\n'),lines[i].strip('\n')), align="center",font=("Courier",20,"bold"))
+            j=j+1
+        
     while True:
         game_window.update()   
         if head.distance(food)<20:
@@ -180,9 +172,9 @@ def game():
             head.goto(head.xcor(),-240)
         if head.ycor()<-240 :
             head.goto(head.xcor(),200)
-        
-        move()
 
+        move()
+        
         for bodypart in bodyparts:
             if bodypart.distance(head)<20:
                 scoreboard = open("D:/PythonSnakeGame/SinglePlayerHighScores.txt","a")
