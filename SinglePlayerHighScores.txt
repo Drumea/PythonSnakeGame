@@ -1,8 +1,4 @@
-30
-Test6
-20
-Test5
-20
+70
 Test1
-5
-Test2
+50
+Drumi

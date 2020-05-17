@@ -1,11 +1,15 @@
 import time
 import turtle
 import random
+import os
+
+filepath=os.path.dirname((__file__))
+txtpath= filepath+"\\SinglePlayerHighScores.txt"
 
 def order_file():
     scores=[]
     names=[]
-    with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
+    with open(txtpath) as scoreboard:
         lines = scoreboard.readlines()
     for i in range(len(lines)):
         if i%2==0:
@@ -23,18 +27,26 @@ def order_file():
                 temp = scores[i]
                 scores[i] = scores[j]   
                 scores[j] = temp     
-    with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt','w') as scoreboard:
+    with open(txtpath,'w') as scoreboard:
         for i in range(0,len(scores)):
             scoreboard.write(str(scores[i])+"\n"+names[i]+"\n")
 
 def game():
     delay=0.20
     score=0
-    order_file()
-    scoreboard=open('d:/PythonSnakeGame/SinglePlayerHighScores.txt','r')
+    if os.path.exists(txtpath):
+        order_file()
+    else:
+        scoreboard=open(txtpath,'w')
+
+    scoreboard=open(txtpath,'r')
     high_score=scoreboard.readline()
-    high_score=int(high_score.strip('\n'))
-    game_window= turtle.Screen() #Game Window
+    if not high_score:
+        high_score=0
+    else:
+        high_score=int(high_score.strip('\n'))
+
+    game_window= turtle.Screen()
     game_window.title("Drumea's Snake Game Attepmt - Singleplayer")
     game_window.tracer(0)
     game_window.bgcolor("black")
@@ -67,7 +79,7 @@ def game():
     display.goto(0,210)
     display.write("Score: 0 High Score: {}".format(high_score), align="center",font=("Courier",20,"bold"))
     
-    def move(): #Movement Function
+    def move():
         y=head.ycor()
         x=head.xcor()
         if head.direction=="up":
@@ -79,7 +91,7 @@ def game():
         if head.direction=="right":
             head.setx(x+20)
             
-    def go_up(): #Movement controls
+    def go_up():
         if head.direction !="down":
             head.direction="up"
     def go_down():
@@ -111,7 +123,7 @@ def game():
         display.goto(0,20)
         display.write(" Game Over \n Please enter your name into the console", align="center",font=("Courier",20,"bold"))
         name=raw_input('Please enter your name: ')
-        scoreboard = open("d:/PythonSnakeGame/SinglePlayerHighScores.txt","a")
+        scoreboard = open(txtpath,"a")
         scoreboard.write(name+"\n")
         scoreboard.close()
         display.clear()
@@ -133,7 +145,7 @@ def game():
         y=300
         j=1
         order_file()
-        with open('d:/PythonSnakeGame/SinglePlayerHighScores.txt') as scoreboard:
+        with open(txtpath) as scoreboard:
             lines = scoreboard.readlines()
         for i in range(0,10,2):
             y=y-100
@@ -177,7 +189,7 @@ def game():
         
         for bodypart in bodyparts:
             if bodypart.distance(head)<20:
-                scoreboard = open("D:/PythonSnakeGame/SinglePlayerHighScores.txt","a")
+                scoreboard = open(txtpath,"a")
                 scoreboard.write(str(score)+"\n")
                 scoreboard.close()
                 bodyparts=[]
