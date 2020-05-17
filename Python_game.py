@@ -147,10 +147,12 @@ def game():
         order_file()
         with open(txtpath) as scoreboard:
             lines = scoreboard.readlines()
-        for i in range(0,10,2):
+        for i in range(0,len(lines),2):
             y=y-100
             display.goto(-100,y)
             display.write("{}.User: {} Score: {}".format(j,lines[i+1].strip('\n'),lines[i].strip('\n')), align="center",font=("Courier",20,"bold"))
+            if j==5:
+                break
             j=j+1
         
     while True:
