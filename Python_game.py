@@ -13,9 +13,9 @@ def order_file():
         lines = scoreboard.readlines()
     for i in range(len(lines)):
         if i%2==0:
-            scores.append(int(lines[i].strip("\n)")))
+            scores.append(int(lines[i].strip("\n")))
         else:
-            names.append(lines[i].strip("\n)"))
+            names.append(lines[i].strip("\n"))
     temp2=0
     temp=0 
     for i in range(0, len(scores)):
@@ -122,7 +122,7 @@ def game():
         game_window.bgcolor("black")          
         display.goto(0,20)
         display.write(" Game Over \n Please enter your name into the console", align="center",font=("Courier",20,"bold"))
-        name=raw_input('Please enter your name: ')
+        name=input('Please enter your name: ')
         scoreboard = open(txtpath,"a")
         scoreboard.write(name+"\n")
         scoreboard.close()
