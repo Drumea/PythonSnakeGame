@@ -4,9 +4,10 @@ import random
 import os
 
 filepath=os.path.dirname((__file__))
-txtpath= filepath+"\\SinglePlayerHighScores.txt"
+txtpath= filepath+"/SinglePlayerHighScores.txt"
 
 def order_file():
+    global scores, names
     scores=[]
     names=[]
     with open(txtpath) as scoreboard:
@@ -145,12 +146,10 @@ def game():
         y=300
         j=1
         order_file()
-        with open(txtpath) as scoreboard:
-            lines = scoreboard.readlines()
-        for i in range(0,len(lines),2):
+        for i in range(len(scores)):
             y=y-100
             display.goto(-100,y)
-            display.write("{}.User: {} Score: {}".format(j,lines[i+1].strip('\n'),lines[i].strip('\n')), align="center",font=("Courier",20,"bold"))
+            display.write("{}.User: {} Score: {}".format(j,names[i],scores[i]), align="center",font=("Courier",20,"bold"))
             if j==5:
                 break
             j=j+1
@@ -198,4 +197,5 @@ def game():
                 game_over_screen()
                 
         time.sleep(delay)
+    game_window.mainloop()
 game()
